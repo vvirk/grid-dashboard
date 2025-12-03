@@ -58,3 +58,8 @@ Each widget is built as a separate component.
 ```bash
 npm install
 npm run dev
+```
+
+## 🕒 Time Spent
+
+~4 hours
