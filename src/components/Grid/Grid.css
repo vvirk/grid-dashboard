@@ -29,3 +29,8 @@
   font-size: 14px;
   color: var(--color-text-primary);
 }
+
+.grid__cell--droppable {
+  border-color: var(--color-drop-target-border);
+  background-color: var(--color-drop-target-bg);
+}

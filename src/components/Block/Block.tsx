@@ -1,4 +1,5 @@
 import './Block.css';
+import type { MouseEvent, PointerEvent } from 'react';
 import type { Block as BlockType } from '../../types/block';
 import { useGrid } from '../../context/GridContext';
 
@@ -22,8 +23,13 @@ function getBlockLabel(type: BlockType['type']): string {
 export function Block({ block }: BlockProps) {
   const { deleteBlock } = useGrid();
 
-  const handleDelete = () => {
+  const handleDeleteClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     deleteBlock(block.id);
+  };
+
+  const handleDeletePointerDown = (e: PointerEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
   };
 
   return (
@@ -31,7 +37,8 @@ export function Block({ block }: BlockProps) {
       <button
         type="button"
         className="block__delete-button"
-        onClick={handleDelete}
+        onPointerDown={handleDeletePointerDown}
+        onClick={handleDeleteClick}
         aria-label="Delete block"
       >
         ×

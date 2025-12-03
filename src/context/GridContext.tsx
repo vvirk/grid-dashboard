@@ -13,12 +13,8 @@ import type { Block, BlockType } from '../types/block';
 interface GridContextValue {
   grid: (Block | null)[];
   addBlock: (type: BlockType) => void;
-}
-
-interface GridContextValue {
-  grid: (Block | null)[];
-  addBlock: (type: BlockType) => void;
   deleteBlock: (id: string) => void;
+  moveBlock: (fromIndex: number, toIndex: number) => void;
 }
 
 const GridContext = createContext<GridContextValue | undefined>(undefined);
@@ -69,6 +65,28 @@ function deleteBlockFromGrid(prev: (Block | null)[], id: string): (Block | null)
   });
 }
 
+function moveBlockInGrid(
+  prev: (Block | null)[],
+  fromIndex: number,
+  toIndex: number,
+): (Block | null)[] {
+  if (fromIndex === toIndex) return prev;
+  if (fromIndex < 0 || fromIndex >= prev.length) return prev;
+  if (toIndex < 0 || toIndex >= prev.length) return prev;
+
+  const source = prev[fromIndex];
+  const target = prev[toIndex];
+
+  if (!source || target !== null) {
+    return prev;
+  }
+
+  const next = [...prev];
+  next[toIndex] = source;
+  next[fromIndex] = null;
+  return next;
+}
+
 export function GridProvider({ children }: GridProviderProps) {
   const [grid, setGrid] = useState<(Block | null)[]>([]);
 
@@ -81,13 +99,18 @@ export function GridProvider({ children }: GridProviderProps) {
     setGrid((prev) => deleteBlockFromGrid(prev, id));
   }, []);
 
+  const moveBlock = useCallback((fromIndex: number, toIndex: number) => {
+    setGrid((prev) => moveBlockInGrid(prev, fromIndex, toIndex));
+  }, []);
+
   const value = useMemo(
     () => ({
       grid,
       addBlock,
       deleteBlock,
+      moveBlock,
     }),
-    [grid, addBlock, deleteBlock],
+    [grid, addBlock, deleteBlock, moveBlock],
   );
 
   return <GridContext.Provider value={value}>{children}</GridContext.Provider>;
