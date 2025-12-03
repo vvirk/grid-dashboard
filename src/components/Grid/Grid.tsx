@@ -52,7 +52,7 @@ function DraggableBlock({ index, block }: DraggableBlockProps) {
     : {};
 
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <div className="draggable-wrapper" ref={setNodeRef} style={style} {...listeners} {...attributes}>
       <Block block={block} />
     </div>
   );

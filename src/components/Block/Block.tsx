@@ -2,23 +2,29 @@ import './Block.css';
 import type { MouseEvent, PointerEvent } from 'react';
 import type { Block as BlockType } from '../../types/block';
 import { useGrid } from '../../context/GridContext';
+import { LineWidget } from '../widgets/LineWidget';
+import { BarWidget } from '../widgets/BarWidget';
+import { TextWidget } from '../widgets/TextWidget';
 
 interface BlockProps {
   block: BlockType;
 }
 
+const blockLabelMap: Record<BlockType['type'], string> = {
+  line: 'Mentions over time',
+  bar: 'Sentiment breakdown',
+  text: 'Notes',
+};
+
 function getBlockLabel(type: BlockType['type']): string {
-  switch (type) {
-    case 'line':
-      return 'Line Chart';
-    case 'bar':
-      return 'Bar Chart';
-    case 'text':
-      return 'Text Block';
-    default:
-      return 'Block';
-  }
+  return blockLabelMap[type] ?? 'Widget';
 }
+
+const widgetMap = {
+  line: <LineWidget />,
+  bar: <BarWidget />,
+  text: <TextWidget />,
+} as const;
 
 export function Block({ block }: BlockProps) {
   const { deleteBlock } = useGrid();
@@ -46,6 +52,7 @@ export function Block({ block }: BlockProps) {
 
       <div className="block__content">
         <span className="block__label">{getBlockLabel(block.type)}</span>
+        {widgetMap[block.type]}
       </div>
     </div>
   );
