@@ -6,6 +6,12 @@ Charts are rendered using a charting library with mocked data, as required by th
 
 ---
 
+## 🌐 Live Demo
+
+👉 **https://vvirk.github.io/grid-dashboard/**
+
+---
+
 ## 🚀 Features
 
 ### 🧩 Widgets
@@ -47,10 +53,8 @@ Each widget is built as a separate component.
 
 ---
 
-
 ## 🛠 Running the Project Locally
 
 ```bash
 npm install
 npm run dev
-```
